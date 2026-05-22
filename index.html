@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leads Lojas de Roupa Londrina — Sem Site</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#0a0e1a;color:#e7eaf2;line-height:1.5;min-height:100vh}
+  .header{background:linear-gradient(135deg,#0d1424,#131c33);border-bottom:1px solid #1f2a44;padding:24px 20px;position:sticky;top:0;z-index:50;backdrop-filter:blur(8px)}
+  .hi{max-width:1280px;margin:0 auto}
+  h1{font-size:22px;font-weight:700;margin-bottom:4px}
+  h1 .accent{color:#f06595}
+  .sub{color:#8a93a8;font-size:13px;margin-bottom:16px}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .stat{background:#131c33;padding:10px 14px;border-radius:8px;border:1px solid #1f2a44;display:flex;flex-direction:column;min-width:110px}
+  .stat-label{font-size:11px;color:#8a93a8;text-transform:uppercase;letter-spacing:.5px}
+  .stat-value{font-size:18px;font-weight:700;margin-top:2px}
+  .pink{color:#f06595}.green{color:#25d366}.blue{color:#74c0fc}.orange{color:#ffa94d}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .fb{background:#131c33;color:#e7eaf2;border:1px solid #1f2a44;padding:7px 12px;border-radius:6px;cursor:pointer;font-size:12px;transition:all .15s}
+  .fb:hover{background:#1c2742}
+  .fb.active{background:#c2255c;border-color:#c2255c}
+  .search{background:#131c33;border:1px solid #1f2a44;color:#e7eaf2;padding:7px 12px;border-radius:6px;font-size:13px;flex:1;min-width:180px}
+  .eb{background:#1f2a3a;color:#f06595;border:1px solid #f06595;padding:7px 12px;border-radius:6px;cursor:pointer;font-size:12px}
+  .eb:hover{background:#f06595;color:#0a0e1a}
+  .container{max-width:1280px;margin:24px auto;padding:0 20px}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(370px,1fr))}
+  .card{background:#131c33;border:1px solid #2a1f2e;border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:11px;transition:all .2s;position:relative}
+  .card:hover{border-color:#f06595;transform:translateY(-2px)}
+  .card.contacted{opacity:.5}
+  .card.contacted::after{content:"Contatado";position:absolute;top:12px;right:12px;background:#25d366;color:#0a0e1a;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px}
+  .ct{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .cn{font-size:14px;font-weight:600;line-height:1.3}
+  .rv-badge{font-size:10px;padding:2px 8px;border-radius:3px;font-weight:600;align-self:flex-start}
+  .rv-high{background:#1f3a2e;color:#51cf66}
+  .rv-mid{background:#1f2a3a;color:#74c0fc}
+  .rv-low{background:#2a1a2e;color:#f06595}
+  .meta{display:flex;gap:10px;font-size:12px;color:#8a93a8;flex-wrap:wrap}
+  .star{color:#ffd43b}
+  .msg-preview{background:#1a1a2e;border-left:3px solid #f06595;padding:10px 12px;border-radius:4px;font-size:12.5px;color:#d4c8e8;line-height:1.6}
+  .msg-preview strong{color:#f06595;display:block;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .actions{display:flex;gap:8px;margin-top:4px}
+  .btn{flex:1;padding:10px;border-radius:6px;border:none;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+  .bwa{background:#25d366;color:#0a0e1a;text-decoration:none}
+  .bwa:hover{background:#20bd58}
+  .bcp{background:#1f2a44;color:#e7eaf2}
+  .bcp:hover{background:#2c3a5e}
+  .bdn{background:transparent;color:#8a93a8;border:1px solid #1f2a44;padding:8px 12px}
+  .bdn:hover{color:#25d366;border-color:#25d366}
+  .bdn.active{background:#1f3a2e;color:#25d366;border-color:#25d366}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#f06595;color:#0a0e1a;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;opacity:0;transition:opacity .2s;z-index:100;pointer-events:none}
+  .toast.show{opacity:1}
+  .empty{text-align:center;padding:60px 20px;color:#6b7693;grid-column:1/-1}
+  .footer{text-align:center;padding:30px 20px;color:#6b7693;font-size:12px}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}h1{font-size:18px}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="hi">
+    <h1>Lojas de Roupa Londrina <span class="accent">— Sem Site</span></h1>
+    <p class="sub">34 lojas femininas qualificadas de Londrina, somente sem site, celular direto, nota 4.5+, ordenadas por avaliações</p>
+    <div class="stats">
+      <div class="stat"><span class="stat-label">Total</span><span class="stat-value pink" id="s-total">34</span></div>
+      <div class="stat"><span class="stat-label">50+ Avaliações</span><span class="stat-value green" id="s-high">0</span></div>
+      <div class="stat"><span class="stat-label">20-49 Avaliações</span><span class="stat-value blue" id="s-mid">0</span></div>
+      <div class="stat"><span class="stat-label">Contatados</span><span class="stat-value orange" id="s-done">0</span></div>
+    </div>
+    <div class="controls">
+      <button class="fb active" data-f="all">Todos</button>
+      <button class="fb" data-f="high">🔥 50+ Avaliações</button>
+      <button class="fb" data-f="mid">20-49 Avaliações</button>
+      <button class="fb" data-f="pending">Não contatados</button>
+      <input class="search" id="search" placeholder="Buscar nome ou bairro...">
+      <button class="eb" id="exportBtn">Baixar CSV</button>
+    </div>
+  </div>
+</header>
+<div class="container">
+  <div class="grid" id="grid"></div>
+  <div class="footer">Google Maps via Apify, Maio/2026 — Lojas de roupa feminina Londrina — Somente sem site — Celular DDD 43 — Nota 4.5+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const LEADS = [
+  {n:"Eunice Reis Boutique",rv:93,r:5,b:"Carlota",w:"5543999688487",wf:"+55 43 999688-487"},
+  {n:"WS Store Londrina",rv:90,r:5,b:"Jardim Igapó",w:"5543984176653",wf:"+55 43 984176-653"},
+  {n:"V JHONI TENDENCE",rv:79,r:5,b:"Jardim Maria Luiza",w:"5543984579015",wf:"+55 43 984579-015"},
+  {n:"Cheias de Charme Presentes",rv:77,r:4.9,b:"Jardim Elizabeth",w:"5543984921358",wf:"+55 43 984921-358"},
+  {n:"CAMY STORE",rv:67,r:4.9,b:"Brasília",w:"5543988425130",wf:"+55 43 988425-130"},
+  {n:"DNA Moda Festa",rv:63,r:4.9,b:"Centro",w:"5543999841676",wf:"+55 43 999841-676"},
+  {n:"Grifes Outlet Madre",rv:55,r:4.6,b:"Palhano 2",w:"5543996161828",wf:"+55 43 996161-828"},
+  {n:"Look Victory Shopping",rv:51,r:4.7,b:"Jardim Leonor",w:"5543998217159",wf:"+55 43 998217-159"},
+  {n:"Valéria de Oliveira Cosméticos",rv:49,r:5,b:"Waldemar Hauer",w:"5543984010693",wf:"+55 43 984010-693"},
+  {n:"Lingeries da Lê",rv:48,r:5,b:"Vivi Xavier",w:"5543984433039",wf:"+55 43 984433-039"},
+  {n:"Stop Country Londrina",rv:44,r:4.8,b:"Centro",w:"5543991620625",wf:"+55 43 991620-625"},
+  {n:"Buty Calçados e Confecções",rv:43,r:4.9,b:"Bandeirantes",w:"5543999200148",wf:"+55 43 999200-148"},
+  {n:"Rilek Store Zona Norte",rv:43,r:5,b:"Vivi Xavier",w:"5543988252115",wf:"+55 43 988252-115"},
+  {n:"Outlet.Go",rv:36,r:4.9,b:"Londrina",w:"5543988157771",wf:"+55 43 988157-771"},
+  {n:"La Fiore Pijamas",rv:34,r:5,b:"Portal de Versalhes II",w:"5543998570720",wf:"+55 43 998570-720"},
+  {n:"Bella Fitness",rv:34,r:4.8,b:"Vivi Xavier",w:"5543999977001",wf:"+55 43 999977-001"},
+  {n:"Anne Roupas e Acessórios",rv:32,r:4.9,b:"Bandeirantes",w:"5543991291112",wf:"+55 43 991291-112"},
+  {n:"Impacto Store Londrina",rv:31,r:5,b:"Centro",w:"5543988674879",wf:"+55 43 988674-879"},
+  {n:"By Sisters",rv:29,r:5,b:"Vivi Xavier",w:"5543996490282",wf:"+55 43 996490-282"},
+  {n:"Daluvi Store",rv:29,r:5,b:"Centro",w:"5543988025241",wf:"+55 43 988025-241"},
+  {n:"Loliz Boutique",rv:26,r:4.9,b:"Higienópolis",w:"5543998157300",wf:"+55 43 998157-300"},
+  {n:"Gioiello Bebê Enxovais",rv:26,r:5,b:"Jardim Adriana I",w:"5543991700006",wf:"+55 43 991700-006"},
+  {n:"Joy Store",rv:24,r:5,b:"Operária",w:"5543996445534",wf:"+55 43 996445-534"},
+  {n:"Zaion Moda Fitness",rv:23,r:5,b:"Centro",w:"5543988113422",wf:"+55 43 988113-422"},
+  {n:"ESPACO UAU",rv:21,r:5,b:"JD Aeroporto",w:"5543984272299",wf:"+55 43 984272-299"},
+  {n:"Le Brune Lingerie",rv:21,r:5,b:"Centro",w:"5543991379498",wf:"+55 43 991379-498"},
+  {n:"Divina Donna",rv:19,r:4.9,b:"Centro",w:"5543991217079",wf:"+55 43 991217-079"},
+  {n:"Intima Dreams",rv:16,r:4.5,b:"Lago Igapó",w:"5543991777672",wf:"+55 43 991777-672"},
+  {n:"BELLA MOÇA",rv:6,r:5,b:"Conjunto Cafezal 4",w:"5543991039371",wf:"+55 43 991039-371"},
+  {n:"Bloom Moda Íntima",rv:5,r:5,b:"Conjunto Cafezal 1",w:"5543991970990",wf:"+55 43 991970-990"},
+  {n:"Acension Style",rv:4,r:5,b:"Jardim Nova Londres",w:"5543991676933",wf:"+55 43 991676-933"},
+  {n:"CARLOTA LONDRINA",rv:2,r:5,b:"Guanabara",w:"5543991220506",wf:"+55 43 991220-506"},
+  {n:"Mzk Boutique e Acessórios",rv:1,r:5,b:"Jardim Vilas Boas",w:"5543991352021",wf:"+55 43 991352-021"},
+  {n:"Timeless Moda Feminina",rv:1,r:5,b:"Novo Antares",w:"5543984938218",wf:"+55 43 984938-218"}
+];
+
+function genMsg(L) {
+  return `Oi, tudo bem? Tava pesquisando lojas de roupa aqui em ${L.b} e acabei caindo no perfil de vocês. Reparei numa coisa que provavelmente tá fazendo vocês perderem venda toda semana. Te mando o que achei?`;
+}
+
+function rvClass(rv){ return rv>=50?'rv-high':rv>=20?'rv-mid':'rv-low'; }
+function rvLabel(rv){ return rv>=50?`🔥 ${rv} avaliações`:rv>=20?`⭐ ${rv} avaliações`:rv>0?`${rv} avaliações`:'Nova'; }
+
+const contacted=new Set();
+let af="all",sq="";
+
+function render(){
+  const grid=document.getElementById("grid");
+  grid.innerHTML="";
+  const q=sq.toLowerCase();
+  const fil=LEADS.filter(L=>{
+    if(af==="high"&&L.rv<50) return false;
+    if(af==="mid"&&(L.rv<20||L.rv>=50)) return false;
+    if(af==="pending"&&contacted.has(L.w)) return false;
+    if(q&&!(L.n.toLowerCase().includes(q)||L.b.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  if(!fil.length){grid.innerHTML='<div class="empty">Nenhum lead encontrado.</div>';updateStats();return;}
+  fil.forEach(L=>{
+    const msg=genMsg(L),isDone=contacted.has(L.w);
+    const c=document.createElement("div");
+    c.className="card"+(isDone?" contacted":"");
+    c.innerHTML=`
+      <div class="ct"><div class="cn">${L.n}</div></div>
+      <span class="rv-badge ${rvClass(L.rv)}">${rvLabel(L.rv)}</span>
+      <div class="meta"><span><span class="star">★</span> ${L.r}</span><span>📍 ${L.b}</span></div>
+      <div class="msg-preview"><strong>Mensagem</strong>${msg}</div>
+      <div class="actions">
+        <a class="btn bwa" href="https://wa.me/${L.w}?text=${encodeURIComponent(msg)}" target="_blank" data-w="${L.w}">💬 ${L.wf}</a>
+        <button class="btn bcp" data-msg="${msg.replace(/"/g,'&quot;')}">📋 Copiar</button>
+      </div>
+      <button class="btn bdn ${isDone?'active':''}" data-w="${L.w}">${isDone?'✓ Contatado':'Marcar como contatado'}</button>`;
+    grid.appendChild(c);
+  });
+  updateStats();
+}
+
+function updateStats(){
+  document.getElementById("s-total").textContent=LEADS.length;
+  document.getElementById("s-high").textContent=LEADS.filter(l=>l.rv>=50).length;
+  document.getElementById("s-mid").textContent=LEADS.filter(l=>l.rv>=20&&l.rv<50).length;
+  document.getElementById("s-done").textContent=contacted.size;
+}
+
+function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1800);}
+
+document.addEventListener("click",e=>{
+  const wa=e.target.closest(".bwa");
+  if(wa){contacted.add(wa.dataset.w);setTimeout(()=>render(),200);return;}
+  const cp=e.target.closest(".bcp");
+  if(cp){navigator.clipboard.writeText(cp.dataset.msg).then(()=>toast("Copiado!"));return;}
+  const dn=e.target.closest(".bdn");
+  if(dn){const w=dn.dataset.w;contacted.has(w)?contacted.delete(w):contacted.add(w);render();return;}
+  const fb=e.target.closest(".fb");
+  if(fb){document.querySelectorAll(".fb").forEach(b=>b.classList.remove("active"));fb.classList.add("active");af=fb.dataset.f;render();return;}
+  if(e.target.id==="exportBtn"){
+    const h=["loja","bairro","whatsapp","nota","avaliacoes","mensagem"];
+    const r=LEADS.map(L=>[L.n,L.b,L.wf,L.r,L.rv,genMsg(L)]);
+    const csv=[h,...r].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}));
+    a.download="leads_lojas_roupa_londrina_v2.csv";a.click();
+    toast("CSV baixado!");
+  }
+});
+document.getElementById("search").addEventListener("input",e=>{sq=e.target.value;render();});
+render();
+</script>
+</body>
+</html>
