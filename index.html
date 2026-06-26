@@ -38,7 +38,7 @@
   .rv-low{background:#2a1a2e;color:#f06595}
   .meta{display:flex;gap:10px;font-size:12px;color:#8a93a8;flex-wrap:wrap}
   .star{color:#ffd43b}
-  .msg-preview{background:#1a1a2e;border-left:3px solid #f06595;padding:10px 12px;border-radius:4px;font-size:12.5px;color:#d4c8e8;line-height:1.6}
+  .msg-preview{background:#1a1a2e;border-left:3px solid #f06595;padding:10px 12px;border-radius:4px;font-size:12.5px;color:#d4c8e8;line-height:1.6;white-space:pre-line}
   .msg-preview strong{color:#f06595;display:block;margin-bottom:4px;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
   .actions{display:flex;gap:8px;margin-top:4px}
   .btn{flex:1;padding:10px;border-radius:6px;border:none;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
@@ -120,8 +120,12 @@ const LEADS = [
   {n:"Timeless Moda Feminina",rv:1,r:5,b:"Novo Antares",w:"5543984938218",wf:"+55 43 984938-218"}
 ];
 
-function genMsg(L) {
-  return `Oi, tudo bem? Tava pesquisando lojas de roupa aqui em ${L.b} e acabei caindo no perfil de vocês. Reparei numa coisa que provavelmente tá fazendo vocês perderem venda toda semana. Te mando o que achei?`;
+function genCatalogMsg(L) {
+  return `Oi, tudo bem? Vi a ${L.n} aqui em Londrina, na regiao de ${L.b}, e achei que combinaria com uma vitrine online mais profissional.
+
+Tenho um catalogo online que adapto com nome, cores, fotos, produtos, WhatsApp e Instagram, com entrega em ate 1 dia.
+
+O valor fica entre R$147 e R$297, dependendo do formato. Posso te mandar um exemplo?`;
 }
 
 function rvClass(rv){ return rv>=50?'rv-high':rv>=20?'rv-mid':'rv-low'; }
@@ -143,7 +147,7 @@ function render(){
   });
   if(!fil.length){grid.innerHTML='<div class="empty">Nenhum lead encontrado.</div>';updateStats();return;}
   fil.forEach(L=>{
-    const msg=genMsg(L),isDone=contacted.has(L.w);
+    const msg=genCatalogMsg(L),isDone=contacted.has(L.w);
     const c=document.createElement("div");
     c.className="card"+(isDone?" contacted":"");
     c.innerHTML=`
@@ -181,7 +185,7 @@ document.addEventListener("click",e=>{
   if(fb){document.querySelectorAll(".fb").forEach(b=>b.classList.remove("active"));fb.classList.add("active");af=fb.dataset.f;render();return;}
   if(e.target.id==="exportBtn"){
     const h=["loja","bairro","whatsapp","nota","avaliacoes","mensagem"];
-    const r=LEADS.map(L=>[L.n,L.b,L.wf,L.r,L.rv,genMsg(L)]);
+    const r=LEADS.map(L=>[L.n,L.b,L.wf,L.r,L.rv,genCatalogMsg(L)]);
     const csv=[h,...r].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
     const a=document.createElement("a");
     a.href=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}));
